@@ -30,7 +30,7 @@ router.get(
 );
 
 router.get(
-  "/getPlayListByUserId/:userId",
+  "/getPlayListByUserId",
   checkToken,
   musicController.getPlayListByUserId
 );

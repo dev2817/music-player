@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { searchSpotifySongs } from "../../api/apis";
 import { useCallback, useEffect, useState } from "react";
 import { useApp } from "../../utils/useApp";
@@ -7,23 +7,11 @@ import Close from '@mui/icons-material/Close';
 import debounce from "lodash/debounce";
 import "./SearchBar.css"
 import AddIcon from '@mui/icons-material/Add';
+import PlayListDrawer from "../playlist/PlayListDrawer";
 
 export default function SearchBar() {
-    const { spotifyToken, setResults } = useApp();
+    const { spotifyToken, setResults, setIsOpen, isVisible, toggleSearch } = useApp();
     const [query, setQuery] = useState("");
-    const [isVisible, setIsVisible] = useState(false);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-        if (event.type === "keydown" && ((event as React.KeyboardEvent).key === "Tab" || (event as React.KeyboardEvent).key === "Shift")) {
-            return;
-        }
-        setIsOpen(open);
-    };
-
-    const toggleSearch = () => {
-        setIsVisible((prev) => !prev);
-    };
 
     const debouncedSearch = useCallback(
         debounce(async (searchQuery: string) => {
@@ -68,39 +56,11 @@ export default function SearchBar() {
             <IconButton onClick={toggleSearch}>
                 {isVisible ? <Close /> : <SearchIcon />}
             </IconButton>
-            <IconButton onClick={() => setIsOpen(true)} >
+            <IconButton onClick={() => { setIsOpen({ open: true, type: "create" }) }} >
                 <AddIcon />
             </IconButton>
 
-            <Drawer
-                anchor="bottom"
-                open={isOpen}
-                onClose={toggleDrawer(false)}
-            >
-                <Box
-                    sx={{
-                        height: 250,
-                        padding: 2,
-                        backgroundColor: "white",
-                        position: "relative"
-                    }}
-                    role="presentation"
-                >
-                    <IconButton sx={{ position: 'absolute', zIndex: 10, right: "25px", top: "10px" }} onClick={toggleDrawer(false)}><Close /></IconButton>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: "10px", px: 2, alignItems: "center", justifyContent: "center" }}>
-                        <Typography variant="h5">
-                            Create Playlist
-                        </Typography>
-                        <TextField
-                            variant="outlined"
-                            fullWidth
-                            name="name"
-                            label="Name"
-                        />
-                        <Button fullWidth variant="contained"><AddIcon /> Create</Button>
-                    </Box>
-                </Box>
-            </Drawer>
+            <PlayListDrawer />
         </div>
     )
 }

@@ -7,10 +7,10 @@ const signUpUser = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
@@ -21,10 +21,10 @@ const signInUser = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
@@ -35,10 +35,10 @@ const getUserById = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 

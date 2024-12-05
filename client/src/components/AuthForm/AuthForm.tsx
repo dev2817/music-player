@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material"
 import "./AuthForm.css"
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { authApi } from "../../api/apis"
 import { SignInUser, SignUpUser } from "../../types/types"
@@ -12,7 +12,7 @@ type TAuthForm = {
 
 export default function AuthForm({ type }: TAuthForm) {
     const [user, setUser] = useState<SignInUser | SignUpUser | null>(null);
-
+    const navigate = useNavigate();
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         name: keyof (SignInUser & SignUpUser)
@@ -32,6 +32,7 @@ export default function AuthForm({ type }: TAuthForm) {
             if (response.data.success) {
                 toast.success("User registered successfully")
                 console.log(response.data.data);
+                navigate('/sign-in')
                 return;
             }
             toast.error(response.data.message);
@@ -49,6 +50,8 @@ export default function AuthForm({ type }: TAuthForm) {
             if (response.data.success) {
                 toast.success("User logged in successfully")
                 console.log(response.data.data);
+                localStorage.setItem("authToken", response.data.data)
+                navigate("/dashboard")
                 return;
             }
             toast.error(response.data.message);

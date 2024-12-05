@@ -15,25 +15,49 @@ export const authApi = {
         return await axios.post(`${baseUrl}/signIn`, data);
     },
     getUserById: async () => {
-        return await axios.get(`${baseUrl}/getUserById`);
+        return await axios.get(`${baseUrl}/getUserById`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
 }
 
 export const musicApi = {
-    createPlayList: async () => {
-        return await axios.post(`${baseUrl}/createPlayList`);
+    createPlayList: async (data: { name: string }) => {
+        return await axios.post(`${baseUrl}/createPlayList`, data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
-    updatePlayList: async () => {
-        return await axios.put(`${baseUrl}/updatePlayList`);
+    updatePlayList: async (playListId: string, data: any) => {
+        return await axios.put(`${baseUrl}/updatePlayList/${playListId}`, data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
     getPlayListByUserId: async () => {
-        return await axios.get(`${baseUrl}/getPlayListByUserId`);
+        return await axios.get(`${baseUrl}/getPlayListByUserId`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
-    getPlayListById: async () => {
-        return await axios.get(`${baseUrl}/getPlayListById`);
+    getPlayListById: async (playListId: string) => {
+        return await axios.get(`${baseUrl}/getPlayListById/${playListId}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
     deletePlayList: async () => {
-        return await axios.get(`${baseUrl}/deletePlayList`);
+        return await axios.get(`${baseUrl}/deletePlayList`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+            }
+        });
     },
 }
 

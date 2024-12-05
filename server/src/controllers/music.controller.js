@@ -2,15 +2,15 @@ import { musicService } from "../services/music.service.js";
 
 const getPlayListByUserId = async (req, res) => {
   try {
-    const response = await musicService.getPlayListByUserId(req.params.userId);
+    const response = await musicService.getPlayListByUserId(req.user.userId);
     res.send(response);
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
@@ -21,24 +21,27 @@ const getPlayListById = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
 const createPlayList = async (req, res) => {
   try {
-    const response = await musicService.createPlayList(req.body);
+    const response = await musicService.createPlayList(
+      req.user.userId,
+      req.body
+    );
     res.send(response);
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
@@ -52,10 +55,10 @@ const updatePlayList = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
@@ -66,10 +69,10 @@ const deletePlayList = async (req, res) => {
     return;
   } catch (err) {
     console.log(err);
-    return {
+    return res.send({
       success: false,
       message: err,
-    };
+    });
   }
 };
 
