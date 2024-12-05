@@ -1,0 +1,27 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    width: 100%;
+  }
+  
+  .search-div {
+    transition: max-width 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    max-width: 0;
+    opacity: 0;
+    white-space: nowrap;
+    width: 100%;
+  }
+  
+  .search-div.visible {
+    max-width: 350px;
+    opacity: 1;
+  }
+  
+  .search-div.hidden {
+    max-width: 0;
+    opacity: 0;
+  }
+  

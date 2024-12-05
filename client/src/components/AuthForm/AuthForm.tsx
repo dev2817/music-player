@@ -123,19 +123,7 @@ export default function AuthForm({ type }: TAuthForm) {
     )
 }
 
-// const { spotifyToken } = useApp();
-//     const [query, setQuery] = useState("");
-//     const [results, setResults] = useState<any[]>([]);
-//     console.log(results);
 
-//     const handleSearch = async () => {
-//         try {
-//             const searchResults = await searchSpotifySongs(query, spotifyToken);
-//             setResults(searchResults.tracks);
-//         } catch (error) {
-//             console.error(error);
-//         }
-//     };
 // <div>
 // <input
 //     type="text"

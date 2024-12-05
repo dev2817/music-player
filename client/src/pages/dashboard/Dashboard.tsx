@@ -1,5 +1,12 @@
+import PlayList from "../../components/playlist/PlayList";
+import SearchBar from "../../components/searchbar/SearchBar";
+
 export default function Dashboard() {
     return (
-        <div>Dashboard</div>
+        <div>
+            <SearchBar />
+            <PlayList />
+            {/* <SearchCardList /> */}
+        </div>
     )
 }
