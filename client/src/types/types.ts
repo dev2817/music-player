@@ -8,3 +8,14 @@ export type SpotifyTrack = {
 export type SearchResult = {
     tracks: SpotifyTrack[];
 };
+
+export type SignUpUser = {
+    name: string
+    email: string
+    password: string
+}
+
+export type SignInUser = {
+    email: string
+    password: string
+}

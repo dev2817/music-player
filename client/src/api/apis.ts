@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SearchResult } from "../types/types";
+import { SearchResult, SignInUser, SignUpUser } from "../types/types";
 
 export const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 console.log(import.meta.env);
@@ -8,11 +8,11 @@ export const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 export const spotifySearchUrl = "https://api.spotify.com/v1/search";
 
 export const authApi = {
-    signUp: async () => {
-        return await axios.post(`${baseUrl}/signUp`);
+    signUp: async (data: SignUpUser) => {
+        return await axios.post(`${baseUrl}/signUp`, data);
     },
-    signIn: async () => {
-        return await axios.post(`${baseUrl}/signIn`);
+    signIn: async (data: SignInUser) => {
+        return await axios.post(`${baseUrl}/signIn`, data);
     },
     getUserById: async () => {
         return await axios.get(`${baseUrl}/getUserById`);
