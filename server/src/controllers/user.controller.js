@@ -30,7 +30,7 @@ const signInUser = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const response = await userService.getUserById(req.params.userId);
+    const response = await userService.getUserById(req.user.userId);
     res.send(response);
     return;
   } catch (err) {

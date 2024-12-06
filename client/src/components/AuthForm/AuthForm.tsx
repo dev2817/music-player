@@ -125,25 +125,3 @@ export default function AuthForm({ type }: TAuthForm) {
         </div>
     )
 }
-
-
-// <div>
-// <input
-//     type="text"
-//     value={query}
-//     onChange={(e) => setQuery(e.target.value)}
-//     placeholder="Search for songs"
-// />
-// <button onClick={handleSearch}>Search</button>
-// <ul>
-//     {results.map((track) => (
-//         <Link target="_blank" to={track.album.uri}>
-//             <li key={track.id}>
-//                 <strong>{track.name}</strong> by{" "}
-//                 {track.artists.map((artist) => artist.name).join(", ")}
-//             </li>
-//         </Link>
-
-//     ))}
-// </ul>
-// </div>

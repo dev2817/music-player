@@ -6,10 +6,11 @@ import { musicApi } from "../../api/apis";
 import toast from "react-hot-toast";
 import { useApp } from "../../utils/useApp";
 import DefaultImage from "../../../public/default.jpg"
+import "./PlayList.css"
 
 export default function PlayListDrawer() {
     const [playListName, setPlayListName] = useState<string>("")
-    const { isOpen, toggleDrawer, playLists, song, getPlayLists, setIsOpen } = useApp();
+    const { isOpen, playLists, song, getPlayLists, setIsOpen } = useApp();
     const createPlayList = async () => {
         try {
             const playlist = await musicApi.createPlayList({ name: playListName })
@@ -49,46 +50,53 @@ export default function PlayListDrawer() {
         <Drawer
             anchor="bottom"
             open={isOpen.open}
-            onClose={toggleDrawer(false, "create")}
+            onClose={() => setIsOpen({ open: false, type: "create" })}
         >
-            <Box
-                sx={{
-                    height: 250,
-                    padding: 2,
-                    backgroundColor: "white",
-                    position: "relative"
-                }}
-                role="presentation"
-            >
-                <IconButton sx={{ position: 'absolute', zIndex: 10, right: "25px", top: "10px" }} onClick={() => { toggleDrawer(false, "create") }}><Close /></IconButton>
-                {isOpen.type === "create" ? <Box sx={{ display: 'flex', flexDirection: 'column', gap: "10px", px: 2, alignItems: "center", justifyContent: "center" }}>
-                    <Typography variant="h5">
-                        Create Playlist
-                    </Typography>
-                    <TextField
-                        variant="outlined"
-                        fullWidth
-                        name="name"
-                        label="Name"
-                        value={playListName}
-                        onChange={(e) => { setPlayListName(e.target.value) }}
-                    />
-                    <Button fullWidth onClick={() => { createPlayList() }} variant="contained"><AddIcon /> Create</Button>
-                </Box> :
+            <Box className="drawer-container" role="presentation">
+                <Close
+                    className="drawer-close-icon"
+                    onClick={() => setIsOpen({ open: false, type: "create" })} />
+
+                {isOpen.type === "create" ? (
+                    <Box className="create-container">
+                        <Typography variant="h5">Create Playlist</Typography>
+                        <TextField
+                            variant="outlined"
+                            fullWidth
+                            name="name"
+                            label="Name"
+                            value={playListName}
+                            onChange={(e) => setPlayListName(e.target.value)}
+                        />
+                        <Button fullWidth onClick={createPlayList} variant="contained">
+                            <AddIcon /> Create
+                        </Button>
+                    </Box>
+                ) : (
                     <Box sx={{ width: "100%" }}>
-                        {
-                            playLists.length > 0 && playLists.map((playlist) => (
-                                <Box sx={{ display: "flex", gap: '10px', mt: 1, width: "100%" }}>
-                                    <img src={playlist?.songs[0]?.url || DefaultImage} alt="" style={{ height: "100px", width: "100px", borderRadius: "15px" }} />
-                                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "80%" }}>
-                                        <Typography variant="body1" sx={{ fontSize: "18px", fontWeight: "600" }}>{playlist?.name}</Typography>
-                                        <IconButton onClick={() => { addSongToPlaylist(playlist?._id) }}><AddIcon /></IconButton>
+                        {playLists.length > 0 &&
+                            playLists.map((playlist) => (
+                                <Box className="playlist-container-drawer" key={playlist._id}>
+                                    <img
+                                        src={playlist?.songs[0]?.url || DefaultImage}
+                                        alt=""
+                                        className="playlist-image-drawer"
+                                    />
+                                    <Box className="playlist-content-drawer">
+                                        <Typography
+                                            variant="body1"
+                                            className="playlist-title"
+                                        >
+                                            {playlist?.name}
+                                        </Typography>
+                                        <IconButton onClick={() => addSongToPlaylist(playlist._id)}>
+                                            <AddIcon />
+                                        </IconButton>
                                     </Box>
                                 </Box>
-                            ))
-                        }
+                            ))}
                     </Box>
-                }
+                )}
             </Box>
         </Drawer>
     )

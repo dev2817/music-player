@@ -1,21 +1,21 @@
 import axios from "axios";
 import { SearchResult, SignInUser, SignUpUser } from "../types/types";
+import axiosInstance from "../utils/axiosInstance";
 
 export const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-console.log(import.meta.env);
 
 export const spotifyTokenUrl = "https://accounts.spotify.com/api/token";
 export const spotifySearchUrl = "https://api.spotify.com/v1/search";
 
 export const authApi = {
     signUp: async (data: SignUpUser) => {
-        return await axios.post(`${baseUrl}/signUp`, data);
+        return await axiosInstance.post(`${baseUrl}/signUp`, data);
     },
     signIn: async (data: SignInUser) => {
-        return await axios.post(`${baseUrl}/signIn`, data);
+        return await axiosInstance.post(`${baseUrl}/signIn`, data);
     },
     getUserById: async () => {
-        return await axios.get(`${baseUrl}/getUserById`, {
+        return await axiosInstance.get(`${baseUrl}/getUserById`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }
@@ -25,35 +25,35 @@ export const authApi = {
 
 export const musicApi = {
     createPlayList: async (data: { name: string }) => {
-        return await axios.post(`${baseUrl}/createPlayList`, data, {
+        return await axiosInstance.post(`${baseUrl}/createPlayList`, data, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }
         });
     },
     updatePlayList: async (playListId: string, data: any) => {
-        return await axios.put(`${baseUrl}/updatePlayList/${playListId}`, data, {
+        return await axiosInstance.put(`${baseUrl}/updatePlayList/${playListId}`, data, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }
         });
     },
     getPlayListByUserId: async () => {
-        return await axios.get(`${baseUrl}/getPlayListByUserId`, {
+        return await axiosInstance.get(`${baseUrl}/getPlayListByUserId`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }
         });
     },
     getPlayListById: async (playListId: string) => {
-        return await axios.get(`${baseUrl}/getPlayListById/${playListId}`, {
+        return await axiosInstance.get(`${baseUrl}/getPlayListById/${playListId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }
         });
     },
-    deletePlayList: async () => {
-        return await axios.get(`${baseUrl}/deletePlayList`, {
+    deletePlayList: async (playListId: string) => {
+        return await axios.delete(`${baseUrl}/deletePlayList/${playListId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("authToken")}`,
             }

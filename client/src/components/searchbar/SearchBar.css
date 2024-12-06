@@ -1,27 +1,128 @@
-.search-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    width: 100%;
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.searchbar-container {
+  transition: transform 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding:0px 25px
+}
+
+.searchbar-visible {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.searchbar-hidden {
+  transform: scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mobile-nav-buttons {
+  display: flex;
+  color: black !important;
+  gap:10px
+}
+
+.mobile-nav-drawer {
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.mobile-nav-drawer-paper {
+  width: 250px;
+  box-sizing: border-box;
+}
+
+.mobile-nav-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-nav-buttons:hover {
+  background-color: #f0f0f0;
+}
+
+.mobile-nav-buttons svg {
+  margin-right: 8px;
+}
+
+.mobile-nav-drawer-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  z-index: 10;
+}
+
+.nav-title-box {
+  display: flex; 
+  align-items: center
+}
+
+.mobile-nav-box {
+  display: flex; 
+  align-items: center
+}
+
+.search-bar-box{
+  padding: 2; 
+  position: relative
+}
+
+.search-bar-icon-box {
+  display: flex; 
+  flex-direction: column; 
+  margin-top: 2
+}
+
+@media screen and (max-width: 600px) {
+  .navbar-container {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
   }
-  
-  .search-div {
-    transition: max-width 0.3s ease, opacity 0.3s ease;
-    overflow: hidden;
-    max-width: 0;
-    opacity: 0;
-    white-space: nowrap;
-    width: 100%;
+
+  .searchbar-container {
+      display: none;
   }
-  
-  .search-div.visible {
-    max-width: 350px;
-    opacity: 1;
+
+  .searchbar-visible {
+      display: block;
+      width: 100%;
+      margin-top: 1rem;
   }
-  
-  .search-div.hidden {
-    max-width: 0;
-    opacity: 0;
+
+  .navbar-container > .MuiBox-root {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 1rem;
   }
-  
+}
+
+.MuiMenu-paper {
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

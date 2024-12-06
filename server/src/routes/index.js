@@ -18,7 +18,7 @@ router.post("/signUp", userController.signUpUser);
 
 router.post("/signIn", userController.signInUser);
 
-router.get("/getUserById/:userId", checkToken, userController.getUserById);
+router.get("/getUserById", checkToken, userController.getUserById);
 
 //music routes
 router.post("/createPlayList", checkToken, musicController.createPlayList);

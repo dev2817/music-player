@@ -35,7 +35,7 @@ const addSong = async (song) => {
 
 const getPlayListByUserId = async (userId) => {
   try {
-    const playlists = await Playlist.find({ userId }).populate("songs");
+    const playlists = await Playlist.find({ userId, isActive: true }).populate("songs");
     if (playlists) {
       return {
         message: "Got playlists successfully!",
@@ -56,9 +56,13 @@ const getPlayListByUserId = async (userId) => {
   }
 };
 
-const getPlayListById = async (platlistId) => {
+const getPlayListById = async (playlistId) => {
   try {
-    const playlist = await Playlist.findById(platlistId).populate("songs");
+    const playlist = await Playlist.findOne({
+      _id: playlistId,
+      isActive: true,
+    }).populate("songs");
+
     if (playlist) {
       return {
         message: "Got playlist successfully!",
@@ -124,7 +128,9 @@ const updatePlayList = async (playListId, data) => {
 
     let updatedSongs = [...playlistExists.songs.map((song) => song.toString())];
 
-    if (data.song) {
+    if (Array.isArray(data.songs)) {
+      updatedSongs = [...new Set(data.songs.map((song) => song.toString()))];
+    } else if (data.song) {
       const checkSong = await addSong(data.song);
       if (checkSong?.success && checkSong.data?._id) {
         const newSongId = checkSong.data._id.toString();
@@ -137,11 +143,6 @@ const updatePlayList = async (playListId, data) => {
           success: false,
         };
       }
-    }
-
-    if (Array.isArray(data.songs)) {
-      const newSongs = data.songs.map((song) => song.toString());
-      updatedSongs = [...new Set([...updatedSongs, ...newSongs])];
     }
 
     const updatedPlaylistData = {
@@ -175,6 +176,7 @@ const updatePlayList = async (playListId, data) => {
     };
   }
 };
+
 
 const deletePlayList = async (playListId) => {
   try {

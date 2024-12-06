@@ -28,6 +28,7 @@ export const checkToken = async (req, res, next) => {
     return res.status(500).send({
       message: "Error verifying token",
       success: false,
+      signOut: true,
     });
   }
 };
