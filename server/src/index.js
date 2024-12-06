@@ -7,7 +7,7 @@ import { connectDB } from "./db/connect.js";
 const app = express();
 app.use(express.json());
 app.use(cors());
-
+app.set("trust proxy", true);
 app.use("/api", router);
 
 connectDB();

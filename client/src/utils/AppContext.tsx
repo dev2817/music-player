@@ -7,7 +7,7 @@ type AppContextType = {
     setUser: React.Dispatch<React.SetStateAction<any | null>>;
     spotifyToken: string,
     setSpotifyToken: React.Dispatch<React.SetStateAction<string>>;
-    song: string,
+    song: any,
     setSong: React.Dispatch<React.SetStateAction<any>>;
     results: any[],
     setResults: React.Dispatch<React.SetStateAction<any[]>>;
@@ -28,10 +28,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [user, setUser] = useState<any>();
     const [spotifyToken, setSpotifyToken] = useState<string>("");
     const [results, setResults] = useState<any[]>([]);
-    const [playLists, setPlayLists] = useState([]);
-    const [isOpen, setIsOpen] = useState({ open: false, type: "create" });
-    const [isVisible, setIsVisible] = useState(false);
-    const [song, setSong] = useState()
+    const [playLists, setPlayLists] = useState<any[]>([]);
+    const [isOpen, setIsOpen] = useState<{ open: boolean; type: "create" | "add" }>({ open: false, type: "create" });
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [song, setSong] = useState<any>()
     const [pageLoading, setPageLoading] = useState<boolean>(false);
 
     const toggleSearch = () => {
