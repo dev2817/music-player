@@ -11,6 +11,7 @@ import "./Playlist.css"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useApp } from "../../utils/useApp";
 import ShareIcon from '@mui/icons-material/Share';
+import Loading from "../../components/loading/Loading";
 
 export default function Playlist() {
     const { playListId } = useParams();
@@ -19,6 +20,7 @@ export default function Playlist() {
     const [edit, setEdit] = useState(false);
     const [playlistName, setPlayListName] = useState<string>();
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const navigate = useNavigate();
 
@@ -33,6 +35,7 @@ export default function Playlist() {
     const deletePlaylist = async () => {
         try {
             const response = await musicApi.deletePlayList(playListId as string);
+            setIsLoading(false)
             if (response.data.success) {
                 toast.success("Playlist deleted successfully!")
                 await getPlayLists();
@@ -51,6 +54,7 @@ export default function Playlist() {
     const updatePlayList = async (data: any) => {
         try {
             const response = await musicApi.updatePlayList(playListId as string, data)
+            setIsLoading(false)
             if (response.data.success) {
                 toast.success("Playlist updated successfully!")
                 setEdit(false)
@@ -69,6 +73,7 @@ export default function Playlist() {
     const getPlaylist = async () => {
         try {
             const response = await musicApi.getPlayListById(playListId as string)
+            setIsLoading(false)
             if (response.data.success) {
                 setPlaylist(response.data.data)
                 return;
@@ -87,7 +92,6 @@ export default function Playlist() {
     const handleDeleteSong = async (songId: string) => {
         try {
             const newSongs = playlist.songs.filter((song: any) => song.songId !== songId).map((song: any) => song._id)
-            console.log(newSongs, songId);
             await updatePlayList({ songs: newSongs })
         }
         catch (err) {
@@ -133,7 +137,7 @@ export default function Playlist() {
                                 onChange={(e) => setPlayListName(e.target.value)}
                                 fullWidth
                             />
-                            <Button onClick={() => { updatePlayList({ name: playlistName }) }} variant="contained">
+                            <Button onClick={() => { setIsLoading(true); updatePlayList({ name: playlistName }) }} variant="contained">
                                 Save
                             </Button>
                             <Close onClick={() => setEdit(false)} fontSize="large" />
@@ -158,8 +162,8 @@ export default function Playlist() {
                     )}
                 </Box>
                 <Box className="playlist-songs">
-                    {playlist?.songs?.length > 0 && (
-                        <Grid container spacing={2}>
+                    {playlist?.songs?.length > 0 && !isLoading && (
+                        <Grid container spacing={2} className="playlist-grid-container" >
                             {playlist.songs.map((song: any, index: number) => (
                                 <Grid item xs={12} sm={6} key={index} className="song-grid">
                                     <Box
@@ -182,7 +186,7 @@ export default function Playlist() {
                                             </Typography>
                                         </Link>
                                     </Box>
-                                    <IconButton onClick={async () => { await handleDeleteSong(song.songId) }}>
+                                    <IconButton onClick={async () => { setIsLoading(true); await handleDeleteSong(song.songId) }}>
                                         <DeleteIcon color="error" />
                                     </IconButton>
                                 </Grid>
@@ -190,7 +194,7 @@ export default function Playlist() {
                         </Grid>
                     )}
                 </Box>
-                {playlist?.songs?.length == 0 && <Typography variant="h5" className="centered-bold-box centered-bold-h-45">
+                {playlist?.songs?.length == 0 && !isLoading && <Typography variant="h5" className="centered-bold-box centered-bold-h-45">
                     You currently don't have any songs in your playlist, please add a song!
                 </Typography>}
                 <Modal
@@ -209,12 +213,17 @@ export default function Playlist() {
                                 Close
                             </Button>
 
-                            <Button onClick={async () => { await handleConfirm() }} variant="contained" color="error">
+                            <Button onClick={async () => { setIsLoading(true); await handleConfirm() }} variant="contained" color="error">
                                 Confirm
                             </Button>
                         </Box>
                     </Box>
                 </Modal>
+                {
+                    playlist?.songs?.length !== 0 && isLoading && <Box className="centered-bold-box centered-bold-h-45">
+                        <Loading />
+                    </Box>
+                }
             </Box>
         </div>
     )

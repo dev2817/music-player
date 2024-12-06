@@ -7,9 +7,10 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { authApi } from "../../api/apis";
 export default function Dashboard() {
-    const { getPlayLists, isVisible, setUser } = useApp()
+    const { getPlayLists, isVisible, setUser, setPageLoading } = useApp()
     const navigate = useNavigate();
     useEffect(() => {
+        setPageLoading(true)
         getPlayLists()
     }, [])
 

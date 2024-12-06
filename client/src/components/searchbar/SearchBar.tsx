@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 
 export default function SearchBar() {
-    const { spotifyToken, setResults, setIsOpen, isVisible, toggleSearch } = useApp();
+    const { spotifyToken, setResults, setIsOpen, isVisible, toggleSearch, setPageLoading } = useApp();
     const [query, setQuery] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -43,6 +43,7 @@ export default function SearchBar() {
                 if (searchQuery.trim()) {
                     const searchResults = await searchSpotifySongs(searchQuery, spotifyToken);
                     setResults(searchResults.tracks);
+                    setPageLoading(false)
                 }
             } catch (error) {
                 console.error(error);
@@ -52,6 +53,7 @@ export default function SearchBar() {
     );
 
     useEffect(() => {
+        setPageLoading(true);
         debouncedSearch(query);
         return () => debouncedSearch.cancel();
     }, [query, debouncedSearch]);

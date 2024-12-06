@@ -2,8 +2,9 @@ import { Box, Grid, Grid2, Typography } from "@mui/material";
 import { useApp } from "../../utils/useApp";
 import DefaultImage from "../../../public/default.jpg";
 import { useNavigate } from "react-router-dom";
+import Loading from "../loading/Loading";
 export default function PlayList() {
-    const { playLists } = useApp();
+    const { playLists, pageLoading } = useApp();
     const navigate = useNavigate();
 
     const formatTimeAgo = (dateString: string): string => {
@@ -41,7 +42,7 @@ export default function PlayList() {
             <Typography variant="h5" sx={{ my: 2 }}>
                 Playlists
             </Typography>
-            {playLists.length > 0 && (
+            {!pageLoading && playLists.length > 0 && (
                 <Grid2 container spacing={3}>
                     {playLists.map((playlist, index) => (
                         <Grid
@@ -69,8 +70,11 @@ export default function PlayList() {
                     ))}
                 </Grid2>
             )}
-            {playLists.length === 0 && <Typography variant="h5" className="centered-bold-box">
+            {!pageLoading && playLists.length === 0 && <Typography variant="h5" className="centered-bold-box">
                 You currently don't have any playlist, press the + icon to create one
+            </Typography>}
+            {pageLoading && playLists.length === 0 && <Typography variant="h5" className="centered-bold-box">
+                <Loading />
             </Typography>}
         </div>
     )

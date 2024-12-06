@@ -31,7 +31,6 @@ export default function AuthForm({ type }: TAuthForm) {
             const response = await authApi.signUp(user as SignUpUser);
             if (response.data.success) {
                 toast.success("User registered successfully")
-                console.log(response.data.data);
                 navigate('/sign-in')
                 return;
             }
@@ -49,7 +48,6 @@ export default function AuthForm({ type }: TAuthForm) {
             const response = await authApi.signIn(user as SignInUser);
             if (response.data.success) {
                 toast.success("User logged in successfully")
-                console.log(response.data.data);
                 localStorage.setItem("authToken", response.data.data)
                 navigate("/dashboard")
                 return;

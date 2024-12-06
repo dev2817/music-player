@@ -16,7 +16,6 @@ export default function PlayListDrawer() {
             const playlist = await musicApi.createPlayList({ name: playListName })
             if (playlist.data.success) {
                 toast.success("Playlist created successfully!")
-                console.log(playlist.data.data);
                 await getPlayLists()
                 setIsOpen({ open: false, type: "create" })
                 return;
