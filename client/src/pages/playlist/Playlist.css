@@ -112,8 +112,22 @@
   padding-right: 40px;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 800px) {
   .centered-box {
     width: 400px;
+  }
+}
+
+@media (max-width: 800px) {
+  .playlist-header {
+    padding-left: 16px;
+    width: 80%;
+  }
+  .edit-mode-container {
+    display: flex;
+    gap: 15px;
+    width: 80%;
+    justify-content: space-between;
+    align-items: center;
   }
 }

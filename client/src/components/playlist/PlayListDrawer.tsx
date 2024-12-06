@@ -7,11 +7,37 @@ import toast from "react-hot-toast";
 import { useApp } from "../../utils/useApp";
 import DefaultImage from "../../../public/default.jpg"
 import "./PlayList.css"
+import Joi from 'joi'
 
+const playListSchema = Joi.object({
+    name: Joi.string()
+        .min(3)
+        .max(50)
+        .required()
+        .messages({
+            "string.empty": "Playlist name is required",
+            "string.min": "Playlist name must be at least 3 characters long",
+            "string.max": "Playlist name must not exceed 50 characters",
+        }),
+});
 export default function PlayListDrawer() {
     const [playListName, setPlayListName] = useState<string>("")
     const { isOpen, playLists, song, getPlayLists, setIsOpen } = useApp();
+    const [error, setError] = useState<string | null>(null);
+
+    const validatePlayListName = (name: string): string | null => {
+        const { error } = playListSchema.validate({ name });
+        return error ? error.details[0].message : null;
+    };
+
+
     const createPlayList = async () => {
+        const error = validatePlayListName(playListName);
+        if (error) {
+            toast.error(error);
+            return;
+        }
+
         try {
             const playlist = await musicApi.createPlayList({ name: playListName })
             if (playlist.data.success) {
@@ -65,8 +91,15 @@ export default function PlayListDrawer() {
                             name="name"
                             label="Name"
                             value={playListName}
-                            onChange={(e) => setPlayListName(e.target.value)}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setPlayListName(value);
+                                setError(validatePlayListName(value));
+                            }}
+                            error={!!error}
+                            helperText={error}
                         />
+
                         <Button fullWidth onClick={createPlayList} variant="contained">
                             <AddIcon /> Create
                         </Button>

@@ -17,6 +17,7 @@ type AppContextType = {
     setIsOpen: React.Dispatch<React.SetStateAction<{ open: boolean; type: "create" | "add" }>>;
     toggleDrawer: (open: boolean, type: "create" | "add") => (event: React.KeyboardEvent | React.MouseEvent) => void;
     isVisible: boolean,
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>
     toggleSearch: () => void,
     pageLoading: boolean,
     setPageLoading: React.Dispatch<React.SetStateAction<boolean>>
@@ -75,7 +76,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
 
     return (
-        <AppContext.Provider value={{ user, setUser, spotifyToken, setSpotifyToken, results, setResults, playLists, getPlayLists, isOpen, setIsOpen, toggleDrawer, isVisible, toggleSearch, song, setSong, pageLoading, setPageLoading }}>
+        <AppContext.Provider value={{ user, setUser, spotifyToken, setSpotifyToken, results, setResults, playLists, getPlayLists, isOpen, setIsOpen, toggleDrawer, isVisible, setIsVisible, toggleSearch, song, setSong, pageLoading, setPageLoading }}>
             {children}
         </AppContext.Provider>
     );

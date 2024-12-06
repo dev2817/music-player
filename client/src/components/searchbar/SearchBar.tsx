@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 
 export default function SearchBar() {
-    const { spotifyToken, setResults, setIsOpen, isVisible, toggleSearch, setPageLoading } = useApp();
+    const { spotifyToken, setResults, setIsOpen, isVisible, toggleSearch, setPageLoading, setIsVisible } = useApp();
     const [query, setQuery] = useState("");
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -153,7 +153,7 @@ export default function SearchBar() {
                         type="text"
                         value={query}
                         fullWidth
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={(e) => { setQuery(e.target.value); setIsVisible(true) }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">

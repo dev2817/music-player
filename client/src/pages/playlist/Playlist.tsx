@@ -12,6 +12,17 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useApp } from "../../utils/useApp";
 import ShareIcon from '@mui/icons-material/Share';
 import Loading from "../../components/loading/Loading";
+import Joi from "joi";
+
+const playlistNameSchema = Joi.string()
+    .min(3)
+    .max(50)
+    .required()
+    .messages({
+        "string.empty": "Playlist name is required",
+        "string.min": "Playlist name must be at least 3 characters long",
+        "string.max": "Playlist name must not exceed 50 characters",
+    });
 
 export default function Playlist() {
     const { playListId } = useParams();
@@ -21,8 +32,13 @@ export default function Playlist() {
     const [playlistName, setPlayListName] = useState<string>();
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
+
+    const validatePlaylistName = (name: string): string | null => {
+        const { error } = playlistNameSchema.validate(name);
+        return error ? error.details[0].message : null;
+    };
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -48,6 +64,22 @@ export default function Playlist() {
         catch (err) {
             console.log(err);
             toast.error("Something went wrong!")
+        }
+    }
+
+    const handleNameChange = async () => {
+        const error = await validatePlaylistName(playlistName as string);
+        if (error) {
+            toast.error(error);
+            setIsLoading(false);
+            return;
+        }
+        try {
+            setIsLoading(true);
+            await updatePlayList({ name: playlistName })
+        }
+        catch (err) {
+            console.log(err);
         }
     }
 
@@ -134,10 +166,17 @@ export default function Playlist() {
                                 type="text"
                                 value={playlistName}
                                 label="Playlist"
-                                onChange={(e) => setPlayListName(e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    setPlayListName(value);
+                                    setError(validatePlaylistName(value));
+                                }}
                                 fullWidth
+                                error={!!error}
+                                helperText={error}
                             />
-                            <Button onClick={() => { setIsLoading(true); updatePlayList({ name: playlistName }) }} variant="contained">
+
+                            <Button onClick={async () => { await handleNameChange() }} variant="contained">
                                 Save
                             </Button>
                             <Close onClick={() => setEdit(false)} fontSize="large" />
